@@ -1,89 +1,731 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SIM Database — Demo (hack with razz)</title>
-  <style>
-    :root{
-      --bg:#0f1720; --card:#11151a; --muted:#9aa6b2;
-      --accent:#39baf9; --danger:#ff6b6b; --glass: rgba(255,255,255,0.03);
-      font-family: "Segoe UI", Roboto, system-ui, Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#071124 0%, #08121a 60%);color:#dbe7ef;min-height:100vh;padding:18px;}
-    .container{max-width:980px;margin:0 auto;}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:14px;justify-content:space-between}
-    header .left{display:flex;align-items:center;gap:12px}
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-    header h1{margin:0;font-size:18px;color:var(--accent);letter-spacing:1px}
-    header .brand{font-size:20px;font-weight:800;color:#7fe0ff}
-    .whatsapp-btn{background:#25D366;border-radius:10px;padding:10px 14px;color:#05202c;font-weight:700;border:none;cursor:pointer}
-    .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;margin:12px 0;box-shadow: 0 6px 18px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
-    .hero{text-align:center;padding:18px}
-    .hero h2{margin:0;font-size:32px;color:var(--accent)}
-    .muted{color:var(--muted)}
-    label{display:block;margin-bottom:8px;color:var(--accent)}
-    input[type="tel"]{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:var(--card);color:inherit;font-size:15px}
-    button{background:var(--accent);border:0;padding:10px 14px;border-radius:10px;color:#05202c;font-weight:700;cursor:pointer}
-    button.danger{background:var(--danger);color:white}
-    .helper{font-size:13px;color:var(--muted);margin-top:8px}
-    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
-    .notice{margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--muted);font-size:14px}
-    .table{width:100%;border-collapse:collapse;margin-top:12px}
-    .table thead th{ text-align:left;padding:12px;color:var(--muted);font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .table tbody td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.02)}
-    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);font-size:13px;color:var(--muted)}
-    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan SIM Database | LEGEND RAZZ</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    /* Modal styles */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.7);display:flex;align-items:center;justify-content:center;z-index:1000}
-    .modal{background:#071622;border-radius:12px;padding:18px;max-width:760px;width:92%;color:#e8f7ff;position:relative;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
-    .modal .title{font-size:20px;color:var(--accent);margin-bottom:8px}
-    .modal .desc{color:var(--muted);margin-bottom:12px}
-    .modal .btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .modal .bigsecret{background:linear-gradient(90deg, rgba(57,186,249,0.07), rgba(38,166,230,0.03));padding:14px;border-radius:8px;margin-top:12px;color:#bff0ff;font-weight:600}
-    .modal .controls{position:absolute;right:12px;top:12px;display:flex;gap:8px}
-    .icon-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
-    .icon-btn:hover{color:var(--accent)}
-    .modal.fullscreen{position:fixed;inset:0;border-radius:0;max-width:none;width:100%;height:100%;display:flex;flex-direction:column;overflow:auto;padding:22px}
-    .center{display:flex;align-items:center;gap:10px}
-    @media (max-width:720px){ .modal{padding:14px} .hero h2{font-size:24px} }
-  </style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #0f1a0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Background Effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: rgba(20, 30, 20, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .input-label {
+            font-size: 1.2rem;
+            color: #00ff88;
+            text-align: center;
+        }
+
+        .input-field {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 20, 10, 0.8);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #0a0a0a;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* WhatsApp Section */
+        .whatsapp-section {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(20, 30, 20, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .whatsapp-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+        }
+
+        .whatsapp-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #00ff88;
+        }
+
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        /* Result Section */
+        .result-section {
+            background: rgba(20, 30, 20, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .result-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #00ff88;
+            text-align: center;
+        }
+
+        #result {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .formatted-data {
+            background: rgba(10, 20, 10, 0.8);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #00ff88;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .formatted-data:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .formatted-data p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .formatted-data strong {
+            color: #00ff88;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: #a0a0a0;
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-razz {
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .input-section, .whatsapp-section, .result-section {
+                padding: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Matrix Effect */
+        @keyframes matrix {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #00ff88;
+            font-family: monospace;
+            font-size: 14px;
+            animation: matrix linear infinite;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
     <header>
-      <div class="left">
-        <div class="dot"></div>
-        <h1>WHATSAPP CHANNEL</h1>
-      </div>
-      <!-- brand with "hack with razz" -->
-      <div class="brand">hack with razz</div>
-      <div>
-        <!-- WhatsApp channel button (user-provided link) -->
-        <button id="openChannel" class="whatsapp-btn">Open WhatsApp Channel</button>
-      </div>
+        <div class="header-content fade-in">
+            <h1>Pakistan SIM Database</h1>
+            <p class="tagline">Advanced SIM Information Retrieval System</p>
+        </div>
     </header>
 
-    <section class="hero card">
-      <h2>WELCOME HERE</h2>
-      <p class="muted">Professional Data Services & Verification — Demo Only</p>
-    </section>
+    <div class="container">
+        <section class="description fade-in">
+            <p>Welcome to the most sophisticated and secure Pakistan SIM Database system. Our cutting-edge technology allows you to retrieve verified SIM information with precision and accuracy. Experience the power of ethical data retrieval with our advanced API integration.</p>
+        </section>
 
-    <!-- Input / Add (disabled until user confirms following the channel) -->
-    <section class="card" id="addCard">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div style="flex:1;min-width:180px">
-          <label for="phone">ENTER NUMBER</label>
-          <input id="phone" type="tel" placeholder="03xxxxxxxxx" disabled />
+        <section class="input-section fade-in">
+            <div class="input-group">
+                <label class="input-label">Enter Mobile Number to Retrieve Information</label>
+                <input type="text" id="numberInput" class="input-field" placeholder="Enter 11-digit mobile number" maxlength="11">
+                <div class="buttons">
+                    <button class="btn btn-primary" id="searchBtn">
+                        <span>🔍</span> Search Database
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <span>🔄</span> Clear Results
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="whatsapp-section fade-in">
+            <h3 class="whatsapp-title">Join Our Exclusive WhatsApp Channel</h3>
+            <a href="https://whatsapp.com/channel/0029VaveHA147XeLExRunW2f" target="_blank" class="whatsapp-link">
+                <span>📱</span> Join LEGEND RAZZ Channel
+            </a>
+        </section>
+
+        <section class="result-section fade-in">
+            <h3 class="result-title">Database Query Results</h3>
+            <div id="result">
+                <p class="no-data">Enter a mobile number and click "Search Database" to retrieve information.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-text">Powered by Advanced Data Retrieval Technology</p>
+        <p class="footer-text">Developed with ❤️ by <span class="legend-razz">LEGEND RAZZ</span></p>
+    </footer>
+
+    <script>
+        // Matrix Background Effect
+        function createMatrixEffect() {
+            const matrixBg = document.getElementById('matrix-bg');
+            const chars = '01010101010101010101';
+            const charArray = chars.split('');
+            
+            for (let i = 0; i < 50; i++) {
+                const matrixChar = document.createElement('div');
+                matrixChar.classList.add('matrix-char');
+                matrixChar.textContent = charArray[Math.floor(Math.random() * charArray.length)];
+                matrixChar.style.left = Math.random() * 100 + 'vw';
+                matrixChar.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                matrixChar.style.animationDelay = Math.random() * 5 + 's';
+                matrixBg.appendChild(matrixChar);
+            }
+        }
+
+        // API Integration
+        async function searchNumber() {
+            const number = document.getElementById('numberInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!number || number.length !== 11) {
+                resultDiv.innerHTML = '<p class="error">Please enter a valid 11-digit mobile number.</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p class="loading">Searching database... Please wait.</p>';
+            
+            try {
+                const url = `https://api.allorigins.win/get?url=${encodeURIComponent(
+                    `https://fam-official.serv00.net/sim/api.php?num=${number}`
+                )}`;
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                const apiData = JSON.parse(result.contents);
+
+                if (apiData.status === "success" && apiData.data.length > 0) {
+                    let formattedData = "";
+
+                    apiData.data.forEach(user => {
+                        formattedData += `
+                            <div class="formatted-data">
+                                <p><strong>🔹 Name:</strong> ${user.Name || "N/A"}</p>
+                                <p><strong>🔹 Mobile:</strong> ${user.Mobile || "N/A"}</p>
+                                <p><strong>🔹 CNIC:</strong> ${user.CNIC || "N/A"}</p>
+                                <p><strong>🔹 Address:</strong> ${user.Address || "N/A"}</p>
+                                <p><strong>🔹 Network:</strong> ${user.Network || "N/A"}</p>
+                            </div>
+                        `;
+                    });
+
+                    resultDiv.innerHTML = formattedData;
+                } else {
+                    resultDiv.innerHTML = "<p class='no-data'>No data found for the provided number.</p>";
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class='error'>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Clear Results
+        function clearResults() {
+            document.getElementById('numberInput').value = '';
+            document.getElementById('result').innerHTML = '<p class="no-data">Enter a mobile number and click "Search Database" to retrieve information.</p>';
+        }
+
+        // Event Listeners
+        document.getElementById('searchBtn').addEventListener('click', searchNumber);
+        document.getElementById('clearBtn').addEventListener('click', clearResults);
+        
+        // Allow Enter key to trigger search
+        document.getElementById('numberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchNumber();
+            }
+        });
+
+        // Initialize Matrix Effect
+        createMatrixEffect();
+    </script>
+</body>
+</html>            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            color: #a0a0a0;
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-razz {
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .input-section, .whatsapp-section, .result-section {
+                padding: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Matrix Effect */
+        @keyframes matrix {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #00ff88;
+            font-family: monospace;
+            font-size: 14px;
+            animation: matrix linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <header>
+        <div class="header-content fade-in">
+            <h1>Pakistan SIM Database</h1>
+            <p class="tagline">Advanced SIM Information Retrieval System</p>
         </div>
-        <div style="width:180px">
-          <label>&nbsp;</label>
-          <button id="startQueryBtn" disabled>START QUERY</button>
-        </div>
-      </div>
-      <div class="helper">ENTER NUMBER LIKE THIS: <span class="pill">03359721431</span></div>
+    </header>
+
+    <div class="container">
+        <section class="description fade-in">
+            <p>Welcome to the most sophisticated and secure Pakistan SIM Database system. Our cutting-edge technology allows you to retrieve verified SIM information with precision and accuracy. Experience the power of ethical data retrieval with our advanced API integration.</p>
+        </section>
+
+        <section class="input-section fade-in">
+            <div class="input-group">
+                <label class="input-label">Enter Mobile Number to Retrieve Information</label>
+                <input type="text" id="numberInput" class="input-field" placeholder="Enter 11-digit mobile number" maxlength="11">
+                <div class="buttons">
+                    <button class="btn btn-primary" id="searchBtn">
+                        <span>🔍</span> Search Database
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <span>🔄</span> Clear Results
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="whatsapp-section fade-in">
+            <h3 class="whatsapp-title">Join Our Exclusive WhatsApp Channel</h3>
+            <a href="https://whatsapp.com/channel/0029VaveHA147XeLExRunW2f" target="_blank" class="whatsapp-link">
+                <span>📱</span> Join LEGEND RAZZ Channel
+            </a>
+        </section>
+
+        <section class="result-section fade-in">
+            <h3 class="result-title">Database Query Results</h3>
+            <div id="result">
+                <p class="no-data">Enter a mobile number and click "Search Database" to retrieve information.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-text">Powered by Advanced Data Retrieval Technology</p>
+        <p class="footer-text">Developed with ❤️ by <span class="legend-razz">LEGEND RAZZ</span></p>
+    </footer>
+
+    <script>
+        // Matrix Background Effect
+        function createMatrixEffect() {
+            const matrixBg = document.getElementById('matrix-bg');
+            const chars = '01010101010101010101';
+            const charArray = chars.split('');
+            
+            for (let i = 0; i < 50; i++) {
+                const matrixChar = document.createElement('div');
+                matrixChar.classList.add('matrix-char');
+                matrixChar.textContent = charArray[Math.floor(Math.random() * charArray.length)];
+                matrixChar.style.left = Math.random() * 100 + 'vw';
+                matrixChar.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                matrixChar.style.animationDelay = Math.random() * 5 + 's';
+                matrixBg.appendChild(matrixChar);
+            }
+        }
+
+        // API Integration
+        async function searchNumber() {
+            const number = document.getElementById('numberInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!number || number.length !== 11) {
+                resultDiv.innerHTML = '<p class="error">Please enter a valid 11-digit mobile number.</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p class="loading">Searching database... Please wait.</p>';
+            
+            try {
+                const url = `https://api.allorigins.win/get?url=${encodeURIComponent(
+                    `https://fam-official.serv00.net/sim/api.php?num=${number}`
+                )}`;
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                const apiData = JSON.parse(result.contents);
+
+                if (apiData.status === "success" && apiData.data.length > 0) {
+                    let formattedData = "";
+
+                    apiData.data.forEach(user => {
+                        formattedData += `
+                            <div class="formatted-data">
+                                <p><strong>🔹 Name:</strong> ${user.Name || "N/A"}</p>
+                                <p><strong>🔹 Mobile:</strong> ${user.Mobile || "N/A"}</p>
+                                <p><strong>🔹 CNIC:</strong> ${user.CNIC || "N/A"}</p>
+                                <p><strong>🔹 Address:</strong> ${user.Address || "N/A"}</p>
+                                <p><strong>🔹 Network:</strong> ${user.Network || "N/A"}</p>
+                            </div>
+                        `;
+                    });
+
+                    resultDiv.innerHTML = formattedData;
+                } else {
+                    resultDiv.innerHTML = "<p class='no-data'>No data found for the provided number.</p>";
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class='error'>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Clear Results
+        function clearResults() {
+            document.getElementById('numberInput').value = '';
+            document.getElementById('result').innerHTML = '<p class="no-data">Enter a mobile number and click "Search Database" to retrieve information.</p>';
+        }
+
+        // Event Listeners
+        document.getElementById('searchBtn').addEventListener('click', searchNumber);
+        document.getElementById('clearBtn').addEventListener('click', clearResults);
+        
+        // Allow Enter key to trigger search
+        document.getElementById('numberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchNumber();
+            }
+        });
+
+        // Initialize Matrix Effect
+        createMatrixEffect();
+    </script>
+</body>
+</html>      <div class="helper">ENTER NUMBER LIKE THIS: <span class="pill">03359721431</span></div>
       <div id="statusRow" class="notice" style="display:none"></div>
     </section>
 
