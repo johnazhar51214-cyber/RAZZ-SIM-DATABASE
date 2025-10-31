@@ -1,40 +1,261 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Advanced HTML Editor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- HTMLHint for error detection -->
-  <script src="https://cdn.jsdelivr.net/npm/htmlhint@0.15.3/dist/htmlhint.min.js"></script>
-  <!-- JS-Beautify for auto fix -->
-  <script src="https://cdn.jsdelivr.net/npm/js-beautify@1.14.9/js/lib/beautify-html.min.js"></script>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SIM Database — Demo (hack with razz)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+    :root{
+      --bg:#0f1720; --card:#11151a; --muted:#9aa6b2;
+      --accent:#39baf9; --danger:#ff6b6b; --glass: rgba(255,255,255,0.03);
+      font-family: "Segoe UI", Roboto, system-ui, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#071124 0%, #08121a 60%);color:#dbe7ef;min-height:100vh;padding:18px;}
+    .container{max-width:980px;margin:0 auto;}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:14px;justify-content:space-between}
+    header .left{display:flex;align-items:center;gap:12px}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+    header h1{margin:0;font-size:18px;color:var(--accent);letter-spacing:1px}
+    header .brand{font-size:20px;font-weight:800;color:#7fe0ff}
+    .whatsapp-btn{background:#25D366;border-radius:10px;padding:10px 14px;color:#05202c;font-weight:700;border:none;cursor:pointer}
+    .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;margin:12px 0;box-shadow: 0 6px 18px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
+    .hero{text-align:center;padding:18px}
+    .hero h2{margin:0;font-size:32px;color:var(--accent)}
+    .muted{color:var(--muted)}
+    label{display:block;margin-bottom:8px;color:var(--accent)}
+    input[type="tel"]{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:var(--card);color:inherit;font-size:15px}
+    button{background:var(--accent);border:0;padding:10px 14px;border-radius:10px;color:#05202c;font-weight:700;cursor:pointer}
+    button.danger{background:var(--danger);color:white}
+    .helper{font-size:13px;color:var(--muted);margin-top:8px}
+    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+    .notice{margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--muted);font-size:14px}
+    .table{width:100%;border-collapse:collapse;margin-top:12px}
+    .table thead th{ text-align:left;padding:12px;color:var(--muted);font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .table tbody td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.02)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);font-size:13px;color:var(--muted)}
+    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* Modal styles */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.7);display:flex;align-items:center;justify-content:center;z-index:1000}
+    .modal{background:#071622;border-radius:12px;padding:18px;max-width:760px;width:92%;color:#e8f7ff;position:relative;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+    .modal .title{font-size:20px;color:var(--accent);margin-bottom:8px}
+    .modal .desc{color:var(--muted);margin-bottom:12px}
+    .modal .btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .modal .bigsecret{background:linear-gradient(90deg, rgba(57,186,249,0.07), rgba(38,166,230,0.03));padding:14px;border-radius:8px;margin-top:12px;color:#bff0ff;font-weight:600}
+    .modal .controls{position:absolute;right:12px;top:12px;display:flex;gap:8px}
+    .icon-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .icon-btn:hover{color:var(--accent)}
+    .modal.fullscreen{position:fixed;inset:0;border-radius:0;max-width:none;width:100%;height:100%;display:flex;flex-direction:column;overflow:auto;padding:22px}
+    .center{display:flex;align-items:center;gap:10px}
+    @media (max-width:720px){ .modal{padding:14px} .hero h2{font-size:24px} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="left">
+        <div class="dot"></div>
+        <h1>WHATSAPP CHANNEL</h1>
+      </div>
+      <!-- brand with "hack with razz" -->
+      <div class="brand">hack with razz</div>
+      <div>
+        <!-- WhatsApp channel button (user-provided link) -->
+        <button id="openChannel" class="whatsapp-btn">Open WhatsApp Channel</button>
+      </div>
+    </header>
+
+    <section class="hero card">
+      <h2>WELCOME HERE</h2>
+      <p class="muted">Professional Data Services & Verification — Demo Only</p>
+    </section>
+
+    <!-- Input / Add (disabled until user confirms following the channel) -->
+    <section class="card" id="addCard">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <label for="phone">ENTER NUMBER</label>
+          <input id="phone" type="tel" placeholder="03xxxxxxxxx" disabled />
+        </div>
+        <div style="width:180px">
+          <label>&nbsp;</label>
+          <button id="startQueryBtn" disabled>START QUERY</button>
+        </div>
+      </div>
+      <div class="helper">ENTER NUMBER LIKE THIS: <span class="pill">03359721431</span></div>
+      <div id="statusRow" class="notice" style="display:none"></div>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0;color:var(--accent)">DISCLAIMER</h3>
+      <p class="muted" style="margin-top:8px">
+        THIS DEMO IS FOR EDUCATIONAL PURPOSES ONLY AND DOES NOT CONNECT TO ANY REAL TELECOM DATABASE.
+        NO HACKING METHODS OR ILLEGAL PROCEDURES ARE PROVIDED OR SUPPORTED.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="helper">Use the WhatsApp Channel button above. You must confirm that you followed the channel before entering numbers.</div>
+      <div class="notice" style="margin-top:12px">Channel link: <a id="channelLink" href="#" style="color:var(--accent)">Open Channel</a></div>
+    </section>
+
+    <footer class="card">
+      © Demo SIM Database — Dark Legend (sample). Deploy on GitHub Pages / Vercel.
+    </footer>
+  </div>
+
+  <!-- Modal / Popup that appears on first load -->
+  <div id="channelModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div id="modalBox" class="modal" role="document">
+      <div class="controls">
+        <button id="enlargeBtn" class="icon-btn" title="Enlarge">⤢</button>
+        <button id="closeModal" class="icon-btn" title="Close">✕</button>
+      </div>
+      <div class="title">Follow WhatsApp Channel to Continue</div>
+      <div class="desc muted">
+        You must follow the WhatsApp channel to enable number entry. This demo cannot verify follow status automatically;
+        please click the channel link, follow the channel in your WhatsApp app, then click "I followed — enable" to continue.
+      </div>
+
+      <div class="btns">
+        <button id="openChannelModal" style="background:#25D366;color:#05202c">Open Channel</button>
+        <button id="confirmFollow">I followed — enable</button>
+        <button id="cancelFollow" class="danger">I won't follow</button>
+      </div>
+
+      <div class="bigsecret" id="secretBox">
+        <!-- SAFE placeholder secret. NOT a hacking instruction. -->
+        DEMO SECRET: "This is a placeholder secret (demo only). No hacking or illegal instructions are given here."
+        <div class="muted" style="margin-top:8px;font-size:13px">Note: For safety and legal reasons, no exploit, hack, or sensitive instructions are provided.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /***************************************************
+     * Enhanced demo with WhatsApp channel gating behavior
+     * - Channel link comes from variable below
+     * - Modal blocks number input until user confirms "I followed"
+     * - The "Open Channel" button opens the provided channel link in a new tab/window
+     * - The modal can be enlarged to fullscreen (pure UI)
+     * - IMPORTANT: This demo does NOT perform any hacking or data extraction.
+     ***************************************************/
+    const CHANNEL_URL = "https://whatsapp.com/channel/0029VaveHA147XeLExRunW2f"; // user-provided link
+
+    // DOM
+    const modalBackdrop = document.getElementById('channelModal');
+    const modalBox = document.getElementById('modalBox');
+    const openChannelBtn = document.getElementById('openChannel');
+    const openChannelModalBtn = document.getElementById('openChannelModal');
+    const confirmFollowBtn = document.getElementById('confirmFollow');
+    const cancelFollowBtn = document.getElementById('cancelFollow');
+    const closeModalBtn = document.getElementById('closeModal');
+    const enlargeBtn = document.getElementById('enlargeBtn');
+    const phoneInput = document.getElementById('phone');
+    const startBtn = document.getElementById('startQueryBtn');
+    const statusRow = document.getElementById('statusRow');
+    const channelLinkAnchor = document.getElementById('channelLink');
+
+    // set link hrefs
+    openChannelBtn.onclick = () => window.open(CHANNEL_URL, '_blank');
+    openChannelModalBtn.onclick = () => window.open(CHANNEL_URL, '_blank');
+    channelLinkAnchor.href = CHANNEL_URL;
+    channelLinkAnchor.target = "_blank";
+
+    // modal controls
+    closeModalBtn.onclick = () => {
+      // user can't close modal without confirming follow or cancel
+      modalBackdrop.style.display = 'flex';
+      showStatus('Please follow the channel or click "I won\'t follow".', true);
+    };
+
+    cancelFollowBtn.onclick = () => {
+      // user declines to follow: keep inputs disabled and hide modal, but warn
+      modalBackdrop.style.display = 'none';
+      disableInputs();
+      showStatus('You declined to follow the channel. Number entry remains disabled.', true);
+    };
+
+    confirmFollowBtn.onclick = () => {
+      // In a real app we'd verify follow status server-side. Here: user confirms manually.
+      modalBackdrop.style.display = 'none';
+      enableInputs();
+      showStatus('Thanks — number entry enabled (demo confirmation).', false);
+    };
+
+    // enlarge toggle
+    let isFullscreen = false;
+    enlargeBtn.onclick = () => {
+      isFullscreen = !isFullscreen;
+      if(isFullscreen){
+        modalBox.classList.add('fullscreen');
+        enlargeBtn.textContent = '⤢';
+      } else {
+        modalBox.classList.remove('fullscreen');
+        enlargeBtn.textContent = '⤢';
+      }
+    };
+
+    // disable/enable input helpers
+    function disableInputs(){ phoneInput.disabled = true; startBtn.disabled = true; }
+    function enableInputs(){ phoneInput.disabled = false; startBtn.disabled = false; }
+
+    // initial state: inputs disabled until confirm
+    disableInputs();
+    // modal shows on first load (displayed by default in HTML); ensure visible
+    modalBackdrop.style.display = 'flex';
+
+    // status message helper
+    function showStatus(msg, isError=false){
+      statusRow.style.display = 'block';
+      statusRow.textContent = msg;
+      statusRow.style.background = isError ? "rgba(255,107,107,0.06)" : "rgba(57,186,249,0.04)";
+      setTimeout(()=> { statusRow.style.display = 'none'; }, 5000);
     }
 
-    .container {
-      background: #fff;
-      margin-top: 40px;
-      width: 95%;
-      max-width: 650px;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
+    // basic validation and demo "query" logic (same safe demo as before)
+    function validPakNumber(n){ return /^03\d{9}$/.test(n); }
+    function genId(){ return 'id_' + Math.random().toString(36).slice(2,10); }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    // very small in-memory records (persisted to localStorage under new key)
+    const STORAGE_KEY = "simDB_records_v1";
+    function loadRecords(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e){ return []; } }
+    function saveRecords(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+    let records = loadRecords();
+
+    document.getElementById('startQueryBtn').addEventListener('click', () => {
+      const val = phoneInput.value.trim();
+      if(!validPakNumber(val)){ showStatus('Please enter a valid Pakistani mobile number (e.g. 03359721431).', true); return; }
+      // demo behavior: check local records, else add placeholder
+      const existing = records.find(r => r.number === val);
+      if(existing){ showStatus('Record found in local demo DB. You can edit locally.', false); }
+      else {
+        const newRec = { id: genId(), number: val, provider: 'Unknown', notes: 'Added via demo query', added: new Date().toISOString() };
+        records.unshift(newRec);
+        saveRecords(records);
+        showStatus('Demo record added locally. No external DB connected.', false);
+      }
+      phoneInput.value = '';
+    });
+
+    // Accessibility: close modal with ESC -> same behavior as cancel (user declined)
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        modalBackdrop.style.display = 'none';
+        disableInputs();
+        showStatus('Modal closed. Number entry disabled until follow confirmed.', true);
+      }
+    });
+
+    // Note: This demo cannot and does not verify actual follow status of WhatsApp channel.
+    // In production you could implement server-side verification flows if WhatsApp provides appropriate APIs
+    // and you have legal permission. Do NOT attempt to scrape or access private data unlawfully.
+
+  </script>
+</body>
+</html>      margin-bottom: 20px;
       color: #444;
     }
 
